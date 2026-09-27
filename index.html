@@ -70,15 +70,42 @@
         .btn-enroll:hover {
             background-color: #333;
         }
-        /* Contact Form */
-        .contact-section {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid #333;
+
+        /* 🎪 Popup Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.8);
         }
+        .modal-content {
+            background-color: #1e1e1e;
+            margin: 10% auto; 
+            padding: 30px;
+            border: 1px solid #ffcc00;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        /* Forms Styling inside Dashboard */
         .form-group {
             margin-bottom: 15px;
         }
@@ -109,6 +136,34 @@
         .btn-submit:hover {
             background-color: #e6b800;
         }
+
+        /* Gateway & Scanner Box */
+        .payment-box {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .qr-placeholder {
+            background-color: #fff;
+            color: #000;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .contact-section {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
     </style>
 </head>
 <body>
@@ -128,50 +183,89 @@
             <div class="course-card">
                 <h3>Class 6 Social Science</h3>
                 <p>Complete syllabus notes, interactive study chapters, solutions, and exam preparation guides.</p>
-                <button class="btn-enroll">🟢 Buy Course / Enroll Now</button>
+                <button class="btn-enroll" onclick="openEnrollModal('Class 6 Social Science')">🟢 Buy Course / Enroll Now</button>
             </div>
 
             <!-- Class 7 -->
             <div class="course-card">
                 <h3>Class 7 Social Science</h3>
                 <p>Complete syllabus notes, interactive study chapters, solutions, and exam preparation guides.</p>
-                <button class="btn-enroll">🟢 Buy Course / Enroll Now</button>
+                <button class="btn-enroll" onclick="openEnrollModal('Class 7 Social Science')">🟢 Buy Course / Enroll Now</button>
             </div>
 
             <!-- Class 8 -->
             <div class="course-card new-course">
                 <h3>Class 8 Social Science</h3>
                 <p>Advanced study chapters, detailed solutions, and continuous mock tests for mid-terms.</p>
-                <button class="btn-enroll">🟢 Buy Course / Enroll Now</button>
+                <button class="btn-enroll" onclick="openEnrollModal('Class 8 Social Science')">🟢 Buy Course / Enroll Now</button>
             </div>
 
             <!-- Class 9 -->
             <div class="course-card new-course">
                 <h3>Class 9 Social Science</h3>
                 <p>Comprehensive foundation for History, Civics, Geography & Economics with revision notes.</p>
-                <button class="btn-enroll">🟢 Buy Course / Enroll Now</button>
+                <button class="btn-enroll" onclick="openEnrollModal('Class 9 Social Science')">🟢 Buy Course / Enroll Now</button>
             </div>
 
             <!-- Class 10 -->
             <div class="course-card new-course">
                 <h3>Class 10 Social Science</h3>
                 <p>Complete Board Exam Preparation Kit, previous year questions, and expert notes.</p>
-                <button class="btn-enroll">🟢 Buy Course / Enroll Now</button>
+                <button class="btn-enroll" onclick="openEnrollModal('Class 10 Social Science')">🟢 Buy Course / Enroll Now</button>
             </div>
 
             <!-- Junior Coding -->
             <div class="course-card">
                 <h3>Junior Computer Coding</h3>
                 <p>Learn Block Coding, HTML, CSS, and basic JavaScript with real-world mini-projects.</p>
-                <button class="btn-enroll">🟢 Enroll in Coding</button>
+                <button class="btn-enroll" onclick="openEnrollModal('Junior Computer Coding')">🟢 Enroll in Coding</button>
             </div>
         </div>
     </section>
 
+    <!-- 🎪 Enrollment Modal Popup -->
+    <div id="enrollModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEnrollModal()">&times;</span>
+            <h2 id="modalTitle">Enroll in Course</h2>
+            
+            <!-- Step 1: Collect User Info -->
+            <form id="studentInfoForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label for="studentName">Full Name:</label>
+                    <input type="text" id="studentName" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="studentEmail">Email Address:</label>
+                    <input type="email" id="studentEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="studentPhone">Phone Number:</label>
+                    <input type="tel" id="studentPhone" required placeholder="Enter your mobile number">
+                </div>
+                <button type="submit" class="btn-submit">Proceed to Payment Gateway</button>
+            </form>
+
+            <!-- Step 2: Payment Gateway Options (Razorpay/HDFC QR & Card Simulation) -->
+            <div id="paymentBox" class="payment-box">
+                <h3>💳 Select Payment Method</h3>
+                <p>Scan the HDFC/Razorpay QR Code to pay securely:</p>
+                
+                <!-- Simulated QR Code Scanner Box -->
+                <div class="qr-placeholder">
+                    [ HDFC / UPI QR CODE ]
+                </div>
+                
+                <p>OR</p>
+                <button class="btn-submit" style="background-color: #00ccff;" onclick="alert('Redirecting to Razorpay Secure Gateway Checkout...')">Pay via Credit/Debit Card (Razorpay)</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 📩 Contact Us / Ask a Doubt Section -->
     <section class="contact-section">
         <h2>📩 Contact Us / Ask a Doubt</h2>
-        <!-- Replace 'YOUR_FORMSPREE_ID' with your actual Formspree ID when you have it -->
+        <!-- Formspree redirection handling -->
         <form action="https://formspree.io" method="POST">
             <div class="form-group">
                 <label for="name">Your Name:</label>
@@ -185,9 +279,3 @@
                 <label for="message">Message / Doubt:</label>
                 <textarea id="message" name="message" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn-submit">Send Message</button>
-        </form>
-    </section>
-
-</body>
-</html>
