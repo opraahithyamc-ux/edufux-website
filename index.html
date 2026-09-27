@@ -1,3 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edufux Academy - Premium Dashboard</title>
+    <style>
+        /* Dark Theme Global Styling */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+        h1 {
+            color: #ffcc00;
+        }
+        .dashboard-section {
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+        .instructor-note {
+            font-style: italic;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .course-card {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: transform 0.2s;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffcc00;
+        }
+        .course-card h3 {
+            color: #ffcc00;
+            margin-top: 0;
+        }
+        .new-course {
+            border-color: #00ccff;
+        }
+        .new-course h3 {
+            color: #00ccff;
+        }
+        .btn-enroll {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-weight: bold;
+        }
+        .btn-enroll:hover {
+            background-color: #333;
+        }
+
+        /* 🎪 Absolute Popup Modal Container */
+        .modal-overlay {
+            display: none; 
+            position: fixed; 
+            z-index: 99999; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-box {
+            background-color: #1e1e1e;
+            margin: 10% auto; 
+            padding: 30px;
+            border: 2px solid #ffcc00;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .close-modal-btn {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            color: #ffcc00;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Input Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background-color: #2b2b2b;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn-submit {
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .btn-submit:hover {
+            background-color: #e6b800;
+        }
+
+        /* Gateway Output Window */
+        .payment-gateway-box {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .qr-code-container {
+            background-color: #fff;
+            color: #000;
+            width: 220px;
+            height: 220px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 4px solid #ffcc00;
+            border-radius: 8px;
+        }
+
+        .contact-section {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .contact-section textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: #2b2b2b;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to Edufux Academy! 🚀</h1>
+        <p>High-Quality & Affordable Online Dashboard System</p>
+    </header>
+
+    <!-- 📚 Student Course Dashboard Section -->
+    <section class="dashboard-section">
+        <h2>📚 Student Course Dashboard</h2>
+        <p class="instructor-note">Guided by a professional software engineer and former computer tutor.</p>
+        
+        <div class="courses-grid">
+            <!-- Class 6 -->
+            <div class="course-card">
+                <h3>Class 6 Social Science</h3>
+                <p>Complete syllabus notes, interactive study chapters, solutions, and exam preparation guides.</p>
+                <button class="btn-enroll" onclick="triggerEnrollment('Class 6 Social Science')">🟢 Buy Course / Enroll Now</button>
+            </div>
+
+            <!-- Class 7 -->
+            <div class="course-card">
+                <h3>Class 7 Social Science</h3>
+                <p>Complete syllabus notes, interactive study chapters, solutions, and exam preparation guides.</p>
+                <button class="btn-enroll" onclick="triggerEnrollment('Class 7 Social Science')">🟢 Buy Course / Enroll Now</button>
+            </div>
+
+            <!-- Class 8 -->
+            <div class="course-card new-course">
+                <h3>Class 8 Social Science</h3>
+                <p>Advanced study chapters, detailed solutions, and continuous mock tests for mid-terms.</p>
+                <button class="btn-enroll" onclick="triggerEnrollment('Class 8 Social Science')">🟢 Buy Course / Enroll Now</button>
+            </div>
+
+            <!-- Class 9 -->
+            <div class="course-card new-course">
+                <h3>Class 9 Social Science</h3>
+                <p>Comprehensive foundation for History, Civics, Geography & Economics with revision notes.</p>
+                <button class="btn-enroll" onclick="triggerEnrollment('Class 9 Social Science')">🟢 Buy Course / Enroll Now</button>
+            </div>
+
+            <!-- Class 10 -->
+            <div class="course-card new-course">
+                <h3>Class 10 Social Science</h3>
+                <p>Complete Board Exam Preparation Kit, previous year questions, and expert notes.</p>
+                <button class="btn-enroll" onclick="triggerEnrollment('Class 10 Social Science')">🟢 Buy Course / Enroll Now</button>
+            </div>
+
+            <!-- Junior Coding -->
+            <div class="course-card">
+                <h3>Junior Computer Coding</h3>
+                <p>Learn Block Coding, HTML, CSS, and basic JavaScript with real-world mini-projects.</p>
+                <button class="btn-enroll" onclick="triggerEnrollment('Junior Computer Coding')">🟢 Enroll in Coding</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🎪 Absolute Popup Modal Container -->
+    <div id="enrollmentOverlay" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="shutEnrollmentModal()">&times;</span>
+            <h2 id="dynamicModalTitle" style="color: #ffcc00; margin-top: 0;">Enrollment Form</h2>
+            
+            <!-- Step 1: User Data Capture Input Form -->
+            <form id="enrollCaptureForm" onsubmit="goPay(event)">
+                <div class="form-group">
+                    <label>Full Name:</label>
+                    <input type="text" id="pName" required placeholder="Enter student's name">
+                </div>
+                <div class="form-group">
                     <label>Email Address:</label>
                     <input type="email" id="pEmail" required placeholder="Enter active email address">
                 </div>
@@ -26,7 +272,7 @@
     <!-- 📩 Contact Us / Ask a Doubt Section -->
     <section class="contact-section">
         <h2>📩 Contact Us / Ask a Doubt</h2>
-        <form action="https://formspree.io/f/xoevnbkz" method="POST">
+        <form action="https://formspree.io" method="POST">
             <div class="form-group">
                 <label for="name">Your Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -35,42 +281,3 @@
                 <label for="email">Your Email:</label>
                 <input type="email" id="email" name="email" required>
             </div>
-            <div class="form-group">
-                <label for="message">Message / Doubt:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="btn-submit">Send Message</button>
-        </form>
-    </section>
-
-    <script>
-        var masterOverlay = document.getElementById("enrollmentOverlay");
-        var headingText = document.getElementById("dynamicModalTitle");
-        var dataForm = document.getElementById("enrollCaptureForm");
-        var payBox = document.getElementById("gatewayHub");
-
-        function triggerEnrollment(courseName) {
-            masterOverlay.style.display = "block";
-            headingText.innerText = "Enroll in " + courseName;
-            dataForm.style.display = "block";
-            payBox.style.display = "none";
-        }
-
-        function shutEnrollmentModal() {
-            masterOverlay.style.display = "none";
-        }
-
-        function goPay(e) {
-            e.preventDefault();
-            dataForm.style.display = "none";
-            payBox.style.display = "block";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == masterOverlay) {
-                masterOverlay.style.display = "none";
-            }
-        }
-    </script>
-</body>
-</html>
